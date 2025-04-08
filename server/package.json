@@ -1,0 +1,70 @@
+{
+  "name": "taskFlow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "compile:dev": "cross-env NODE_ENV=dev tsc --project tsconfig.json",
+    "start:dev": "cross-env NODE_ENV=dev tsc --project tsconfig.json && cross-env NODE_ENV=dev nodemon dist/server.js",
+    "start:ts-node-dev": "cross-env NODE_ENV=dev ts-node --project tsconfig.json -r tsconfig-paths/register src/server.ts",
+    "start:prod": "cross-env NODE_ENV=prod tsc --project tsconfig.json && cross-env NODE_ENV=prod node dist/server.js",
+    "start:diagnostic": "cross-env NODE_ENV=dev tsc --project tsconfig.json --diagnostics && cross-env NODE_ENV=dev node --trace-deprecation --trace-warnings dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RqtHqck/taskFlow.git"
+  },
+  "keywords": [
+    "git",
+    "flow",
+    "task",
+    "management",
+    "develop",
+    "track"
+  ],
+  "author": "Ihar Tsitou",
+  "license": "ISC",
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "http-errors": "^2.0.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.5",
+    "sequelize-typescript": "^2.1.6",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.14.0",
+    "@types/pg": "^8.11.10",
+    "cross-env": "^7.0.3",
+    "module-alias": "^2.2.3",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "_moduleAliases": {
+    "@root": "./dist/",
+    "@config": "./dist/config/",
+    "@errors": "./dist/errors/",
+    "@routes": "./dist/routes/",
+    "@controllers": "./dist/controllers/",
+    "@services": "./dist/services/",
+    "@models": "./dist/models",
+    "@utils": "./dist/utils",
+    "@interfaces": "./dist/interfaces/",
+    "@middlewares": "./dist/middlewares/"
+  }
+}
