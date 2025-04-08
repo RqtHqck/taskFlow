@@ -16,6 +16,6 @@ COPY . .
 EXPOSE 8080
 
 # Set ENV
-ENV NODE_ENV=dev
+ENV NODE_ENV=prod
 
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
