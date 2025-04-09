@@ -1,0 +1,9 @@
+import { Router } from 'express';
+import tasksRoutes from '@routes/tasks.routes';
+
+const router = Router();
+
+router
+    .use('/tasks', tasksRoutes);
+
+export default router;

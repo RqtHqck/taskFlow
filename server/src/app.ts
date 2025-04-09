@@ -9,6 +9,7 @@ import compression from "compression";
 import helmet from "helmet";
 import cors from "cors";
 import logger from "@utils/logger";
+import routes from "@routes/index";
 
 const app: Application = express();
 app
@@ -18,6 +19,7 @@ app
     .use(compression())
     .use(helmet())
     .use(cors())
+    .use('api/v1/', routes);
 
 app.use(ErrorHandler);
 
