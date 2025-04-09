@@ -35,7 +35,7 @@ export default class ApiError extends Error {
         return new ApiError(500, message || "Database model error.", "DATABASE_MODEL_ERROR", [], originalError);
     }
 
-    static databaseRequestError(message?: string, originalError?: unknown) {
+    static databaseError(message?: string, originalError?: unknown) {
         return new ApiError(500, message || "Database request error.", "DATABASE_REQUEST_ERROR", [], originalError);
     }
 

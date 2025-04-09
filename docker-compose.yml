@@ -23,12 +23,11 @@ services:
     container_name: db
     image: postgres:15.2
     ports:
-      - "5435:5432"
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file:
       - ./server/.env.prod
-
     restart: unless-stopped
     networks:
       - app-network

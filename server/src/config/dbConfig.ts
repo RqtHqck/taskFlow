@@ -1,5 +1,8 @@
 import logger from '@utils/logger';
 import {Dialect} from "sequelize";
+import Task from "@models/task.model";
+import Status from "@models/status.model";
+import {Model, ModelStatic} from "sequelize-typescript";
 
 export interface IDbConfig {
     database: string;
@@ -16,6 +19,7 @@ export interface IDbConfig {
         idle: number;
     };
     logging: (msg: string) => any;
+    models: string[];
 }
 
 
@@ -34,6 +38,8 @@ const dbConfig: IDbConfig = {
         idle: 10000,
     },
     logging: (msg: string) => logger.info(msg),
+    models: [__dirname + '/**/*.model.ts']
+
 }
 
 export default dbConfig;

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "tsBuildInfoFile": "./.tsbuildinfo",
+//    "tsBuildInfoFile": "./.tsbuildinfo",
     "incremental": true,
     "target": "ES6",
     "module": "CommonJS",
@@ -20,7 +20,8 @@
       "@services/*": ["services/*"],
       "@models/*": ["models/*"],
       "@utils/*": ["utils/*"],
-      "@interfaces/*": ["interfaces/*"],
+      "@entities/*": ["entities/*"],
+      "@repositories/*": ["repositories/*"],
       "@middlewares/*": ["middlewares/*"]
     }
   },

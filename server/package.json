@@ -64,7 +64,8 @@
     "@services": "./dist/services/",
     "@models": "./dist/models",
     "@utils": "./dist/utils",
-    "@interfaces": "./dist/interfaces/",
+    "@entities": "./dist/entities/",
+    "@repositories": "./dist/repositories/",
     "@middlewares": "./dist/middlewares/"
   }
 }
