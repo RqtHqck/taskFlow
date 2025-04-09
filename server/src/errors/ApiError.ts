@@ -1,34 +1,32 @@
-import { HttpError } from 'routing-controllers';
-
-export default class ApiError extends HttpError {
+export default class ApiError extends Error {
+    public status: number;
     public code: string;
     public details: string[] | null;
-    public originalError?: unknown;
 
     constructor(
         status: number,
         message: string,
         code: string,
         details: string[] = [],
-        originalError?: unknown
+        originalError?: unknown // Сделаем originalError типом unknown
     ) {
-        super(status, message);
-        this.name = this.constructor.name;
-        this.code = code;
-        this.details = details.length > 0 ? details : null;
-        this.originalError = originalError;
+        super(message); // Устанавливаем сообщение ошибки
+        this.name = this.constructor.name; // Указываем имя класса
+        this.status = status; // HTTP-статус ошибки
+        this.code = code; // Код ошибки
+        this.details = details.length > 0 ? details : null; // Дополнительные детали ошибки
 
+        // Если передана оригинальная ошибка, проверяем её тип и добавляем стек
         if (originalError) {
-            const safeError = originalError instanceof Error
-                ? originalError
-                : new Error(String(originalError));
+            const safeError = originalError instanceof Error ? originalError : new Error(String(originalError));
             this.stack += `\nCaused by: ${safeError.stack}`;
         }
 
+        // Устанавливаем прототип для корректного наследования
         Object.setPrototypeOf(this, new.target.prototype);
     }
 
-
+    // Методы для создания предопределённых типов ошибок
     static validationError(message: string, details: string[] = [], originalError?: unknown) {
         return new ApiError(400, message, "VALIDATION_ERROR", details, originalError);
     }

@@ -20,7 +20,7 @@
       "@services/*": ["services/*"],
       "@models/*": ["models/*"],
       "@utils/*": ["utils/*"],
-      "@entities/*": ["entities/*"],
+      "@interfaces/*": ["interfaces/*"],
       "@middlewares/*": ["middlewares/*"]
     }
   },
