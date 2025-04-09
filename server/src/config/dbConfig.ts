@@ -16,6 +16,8 @@ export interface IDbConfig {
         idle: number;
     };
     logging: (msg: string) => any;
+    models: string[];
+    storage: string;
 }
 
 
@@ -34,6 +36,8 @@ const dbConfig: IDbConfig = {
         idle: 10000,
     },
     logging: (msg: string) => logger.info(msg),
+    models: [__dirname, '../models'],
+    storage: ':memory:'
 }
 
 export default dbConfig;

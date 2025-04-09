@@ -1,31 +1,35 @@
-import { ErrorRequestHandler } from "express";
+import { ExpressErrorMiddlewareInterface, Middleware } from "routing-controllers";
+import { Request, Response, NextFunction } from "express";
 import ApiError from "@errors/ApiError";
 import logger from "@utils/logger";
 
-const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
-    if (error instanceof ApiError) {
-        logger.error(`API Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message} ///Error trace: ${error.stack ? error.stack : ''}`);
-        res.status(error.status).json({
+@Middleware({ type: "after" }) // после всех middleware
+export class ErrorHandler implements ExpressErrorMiddlewareInterface {
+    error(error: Error, request: Request, response: Response, next: NextFunction): void {
+        // Обработка ApiError инстансов
+        if (error instanceof ApiError) {
+            logger.error(`API Error in ${request.method} ${request.url}: ${error.code} - ${error.message}`);
+
+            response.status(error.status).json({
+                success: false,
+                error: {
+                    code: error.code,
+                    message: error.message,
+                    details: error.details,
+                },
+            });
+            return;
+        }
+
+        // Необработанные ошибки сервера
+        logger.error(`Uncaught Error in ${request.method} ${request.url}: ${error.message}\n${error.stack || ""}`);
+
+        response.status(500).json({
             success: false,
             error: {
-                code: error.code,
-                message: error.message,
-                details: error.details,
+                code: "UNCAUGHT_SERVER_ERROR",
+                message: "An unexpected error occurred.",
             },
         });
-        return; // Завершаем выполнение
     }
-
-    // Обработка неожиданных ошибок
-    logger.error(`Uncaught Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message}\\\Error trace: ${error.stack ? error.stack : ''}`);
-    res.status(500).json({
-        success: false,
-        error: {
-            code: "INTERNAL_SERVER_ERROR",
-            message: "An unexpected error occurred.",
-        },
-    });
-    return; // Завершаем выполнение для Internal Server Error
-};
-
-export default ErrorHandler;
+}
