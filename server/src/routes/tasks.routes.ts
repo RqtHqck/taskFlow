@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import {TasksController} from "@controllers/tasks.controller";
-// import { query } from 'express-validator';
 import {TasksService} from "@services/tasks.service";
 
 const tasksService = new TasksService();
