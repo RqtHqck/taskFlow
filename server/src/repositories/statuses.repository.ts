@@ -60,7 +60,7 @@ export class StatusesRepository {
         try{
             logger.info(`StatusesRepository::createOne dto:${JSON.stringify(createStatusObj)}`);
             const [status, created] = await this._db.Status.findOrCreate({
-                where: {name: createStatusObj.name},
+                where: { name: createStatusObj.name },
                 defaults: createStatusObj
             });
             if (!created) {
@@ -71,7 +71,7 @@ export class StatusesRepository {
             if (err instanceof ApiError) {
                 throw err;
             }
-            throw ApiError.databaseError("Error find status", err);
+            throw ApiError.databaseError("Error create status", err);
         }
     }
 
@@ -84,7 +84,7 @@ export class StatusesRepository {
             if (err instanceof ApiError) {
                 throw err;
             }
-            throw ApiError.databaseError("Error find status", err);
+            throw ApiError.databaseError("Error create status", err);
         }
     }
 }

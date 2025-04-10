@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {TasksService} from "@services/tasks.service";
 import logger from "@utils/logger";
-import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
+import {CreateTaskDto, UpdateTaskDto} from "@entities/dto/task.dto";
 import ApiError from "@errors/ApiError";
 
 export class TasksController {
@@ -14,8 +14,8 @@ export class TasksController {
     async create(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::create")
-            const taskDto: CreateTaskDto = req.body;
-            const tasks = await this._taskService.create(taskDto);
+            const createTaskDto: CreateTaskDto = req.body;
+            const tasks = await this._taskService.create(createTaskDto);
             return res
                 .status(200)
                 .json({tasks});
@@ -33,6 +33,20 @@ export class TasksController {
                 throw ApiError.badRequestError("TaskId must be type of integer");
             }
             const task = await this._taskService.getById(taskId);
+            return res
+                .status(200)
+                .json({task});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async update(req: Request, res: Response, next: NextFunction): Promise<any> {
+        try {
+            logger.info("TasksController::update")
+            const updateTaskDto: UpdateTaskDto = req.body;
+            const task = await this._taskService.update(updateTaskDto);
             return res
                 .status(200)
                 .json({task});

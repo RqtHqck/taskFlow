@@ -1,6 +1,7 @@
 import "module-alias/register";
 import "@config/dotenv";
 import ErrorHandler from "@middlewares/errorHanlder.middleware";
+import {loggingAfter, loggingBefore} from "@middlewares/logging.middleware";
 
 import express, { Application } from "express";
 import bodyParser from "body-parser";
@@ -19,7 +20,9 @@ app
     .use(compression())
     .use(helmet())
     .use(cors())
+    .use(loggingBefore)
     .use('/api/v1/', routes)
+    .use(loggingAfter)
     .use(ErrorHandler);
 
 export default app;

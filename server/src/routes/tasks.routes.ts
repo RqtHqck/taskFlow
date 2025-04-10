@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {TasksController} from "@controllers/tasks.controller";
 import {TasksService} from "@services/tasks.service";
 import {validateBodyDto} from "@middlewares/validators/validateDto.middleware";
-import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
+import {CreateTaskDto, UpdateTaskDto} from "@entities/dto/task.dto";
 
 const tasksService = new TasksService();
 const tasksController = new TasksController(tasksService);
@@ -25,11 +25,12 @@ tasksRouter.post('/',
 tasksRouter.get('/:taskId',
     tasksController.getById.bind(tasksController));
 
-// // PUT api/v1/tasks/:taskId
-// // Params taskId
-// // Body {title, description, comment, status}
-// tasksRouter.put('/:taskId',
-//     tasksController.updateById.bind(tasksController));
+// PUT api/v1/tasks/:taskId
+// Params taskId
+// Body {title, description, comment, status}
+tasksRouter.put('/',
+    validateBodyDto(UpdateTaskDto),
+    tasksController.update.bind(tasksController));
 //
 // // PATCH api/v1/tasks/:taskId/status
 // // Params taskId

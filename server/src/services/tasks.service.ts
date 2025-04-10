@@ -1,6 +1,6 @@
 import {TasksRepository} from "@repositories/tasks.repository";
-import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
-import { ITask } from "@entities/interfaces";
+import {CreateTaskDto, UpdateTaskDto} from "@entities/dto/task.dto";
+import {ITask, ITaskUpdate} from "@entities/interfaces";
 import logger from "@utils/logger";
 import {StatusesService} from "@services/statuses.service";
 
@@ -26,13 +26,13 @@ export class TasksService {
         }
 
         // Create and return task
-        const task: ITask = {
+        const taskObj: ITask = {
             title: createTaskDto.title,
             description: createTaskDto.description,
             comment: createTaskDto.comment || null,
             statusId: status.id
         }
-        return await this._tasksRepository.create(task);
+        return await this._tasksRepository.create(taskObj);
     }
 
 
@@ -40,5 +40,26 @@ export class TasksService {
         logger.info("TasksService::getById")
         // Find task by id
         return await this._tasksRepository.findByPk(taskId);
+    }
+
+
+    async update(updateTaskDto: UpdateTaskDto) {
+        logger.info("TasksService::update")
+        // Find task status if exists in CreateTaskDto
+        let status;
+        if (updateTaskDto.status) {
+            logger.info(`Try find status: ${updateTaskDto.status}`)
+            status = await this._statusesService.findOne({ name: updateTaskDto.status});
+        }
+        const updateObj: ITaskUpdate = {
+            id: updateTaskDto.id,
+            title: updateTaskDto.title,
+            description: updateTaskDto.description,
+            comment: updateTaskDto.comment,
+        }
+        if (status && status.id) {
+            updateObj.statusId = status.id
+        }
+        return await this._tasksRepository.update(updateObj);
     }
 }

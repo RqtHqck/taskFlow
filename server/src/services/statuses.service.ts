@@ -1,7 +1,7 @@
 import {StatusesRepository} from "@repositories/statuses.repository";
 import { IStatus } from "@entities/interfaces";
 import logger from "@utils/logger";
-import {CreateStatusDto} from "@entities/dto/CreateStatusDto";
+import {CreateStatusDto} from "@entities/dto/status.dto";
 
 export class StatusesService {
     private _statusesRepository: StatusesRepository;
@@ -23,6 +23,8 @@ export class StatusesService {
         // Find by filter
         return await this._statusesRepository.findOne(filter);
     }
+
+
     async createOne(createStatusDto: CreateStatusDto) {
         logger.info("StatusesService::createOne")
 
