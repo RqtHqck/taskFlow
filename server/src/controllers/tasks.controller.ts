@@ -14,6 +14,7 @@ export class TasksController {
 
     async create(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
+            logger.info("TasksController::create")
             const taskDto: CreateTaskDto = req.body;
             const tasks = await this._taskService.create(taskDto);
             return res

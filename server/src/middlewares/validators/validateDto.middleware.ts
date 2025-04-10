@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import ApiError from '@errors/ApiError';
+import logger from "@utils/logger";
 
 export const validateBodyDto = (dtoClass: any) => {
+    logger.info("Validate dto")
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const dtoInstance = plainToInstance(dtoClass, req.body);

@@ -19,7 +19,7 @@ app
     .use(compression())
     .use(helmet())
     .use(cors())
-    .use('api/v1/', routes)
+    .use('/api/v1/', routes)
     .use(ErrorHandler);
 
 export default app;

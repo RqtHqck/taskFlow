@@ -2,6 +2,7 @@ import {TasksRepository} from "@repositories/tasks.repository";
 import {StatusesRepository} from "@repositories/statuses.repository";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
 import ITask from "@entities/interfaces";
+import logger from "@utils/logger";
 
 export class TasksService {
     private _tasksRepository: TasksRepository;
@@ -13,6 +14,7 @@ export class TasksService {
     }
 
     async create(createTaskDto: CreateTaskDto) {
+        logger.info("TasksService::create")
         // Find task status if exists in CreateTaskDto
         let status;
         if (createTaskDto.status) {
