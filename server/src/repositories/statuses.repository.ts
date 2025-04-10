@@ -47,8 +47,7 @@ export class StatusesRepository {
     async createMany(createStatuses: IStatus[]) {
         try{
             logger.info("StatusesRepository::createMany")
-            const status = await this._db.Status.bulkCreate(createStatuses);
-            return status;
+            return await this._db.Status.bulkCreate(createStatuses);
         } catch(err) {
             if (err instanceof ApiError) {
                 throw err;

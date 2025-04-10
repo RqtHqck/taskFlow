@@ -1,11 +1,8 @@
 import {
     IsString,
-    IsOptional,
-    IsEnum,
     MinLength,
     IsNotEmpty,
-    MaxLength,
-    Matches
+    MaxLength, IsEnum,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { StatusEnum } from "@entities/enums";
@@ -16,7 +13,8 @@ export class CreateStatusDto {
     @IsNotEmpty({ message: 'Name should not be empty' })
     @MinLength(3, { message: 'Name should not be less then 3 symbols' })
     @MaxLength(32, { message: 'Name should not be grater then 32 symbols' })
-    name!: string;
+    @IsEnum(StatusEnum)
+    name!: StatusEnum;
 }
 
 export class StatusDto {
@@ -25,5 +23,6 @@ export class StatusDto {
 
     @Expose()
     @IsString()
-    name!: string;
+    @IsEnum(StatusEnum)
+    name!: StatusEnum;
 }

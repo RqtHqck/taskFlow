@@ -1,5 +1,5 @@
 {
-  "name": "taskFlow",
+  "name": "taskflow",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",

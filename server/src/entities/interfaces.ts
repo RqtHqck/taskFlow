@@ -1,6 +1,4 @@
-import {Sequelize} from "sequelize-typescript";
-import Task from "@models/task.model";
-import Status from "@models/status.model";
+import {StatusEnum} from "@entities/enums";
 
 export interface ITask {
     id?: number;
@@ -12,5 +10,5 @@ export interface ITask {
 
 export interface IStatus {
     id?: number;
-    name: string;
+    name: StatusEnum;
 }
