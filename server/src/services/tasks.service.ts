@@ -1,16 +1,16 @@
 import {TasksRepository} from "@repositories/tasks.repository";
-import {StatusesRepository} from "@repositories/statuses.repository";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
-import { ITask } from "@entities/interfaces";
+import {IStatus, ITask} from "@entities/interfaces";
 import logger from "@utils/logger";
+import {StatusesService} from "@services/statuses.service";
 
 export class TasksService {
     private _tasksRepository: TasksRepository;
-    private _statusesRepository: StatusesRepository;
+    private _statusesService: StatusesService;
 
     constructor() {
         this._tasksRepository = new TasksRepository();
-        this._statusesRepository = new StatusesRepository();
+        this._statusesService = new StatusesService();
     }
 
     async create(createTaskDto: CreateTaskDto) {
@@ -19,11 +19,12 @@ export class TasksService {
         let status;
         if (createTaskDto.status) {
             logger.info(`Try find status: ${createTaskDto.status}`)
-            status = await this._statusesRepository.findOneByName(createTaskDto.status);
+            status = await this._statusesService.findOne({ name: createTaskDto.status});
         } else {
             logger.info(`Status default: ${createTaskDto.status}`)
-            status = await this._statusesRepository.findOneByName("pending");
+            status = await this._statusesService.findOne({ name: "pending"});
         }
+
 
         // Create and return task
         const task: ITask = {

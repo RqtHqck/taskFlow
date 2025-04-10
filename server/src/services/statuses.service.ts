@@ -10,6 +10,19 @@ export class StatusesService {
         this._statusesRepository = new StatusesRepository();
     }
 
+
+    async findAll(filter: any) {
+        logger.info("StatusesService::find")
+        // Find by filter
+        return await this._statusesRepository.findAll(filter);
+    }
+
+
+    async findOne(filter: any) {
+        logger.info("StatusesService::find")
+        // Find by filter
+        return await this._statusesRepository.findOne(filter);
+    }
     async createOne(createStatusDto: CreateStatusDto) {
         logger.info("StatusesService::createOne")
 

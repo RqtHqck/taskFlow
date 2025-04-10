@@ -6,16 +6,10 @@ import logger from "@utils/logger";
 export class StatusesRepository {
     constructor(private _db: any = db) { }
 
-    async findOneByName(statusName: string) {
+    async getAll() {
         try{
-            logger.info("StatusesRepository::findOneByName")
-            const status = await this._db.Status.findOne({
-                where: { name: statusName }
-            });
-            if (!status) {
-                throw ApiError.notFoundError(`Status ${statusName} not found`);
-            }
-            return status;
+            logger.info("StatusesRepository::getAll")
+            return await this._db.Status.findAll();
         } catch(err) {
             if (err instanceof ApiError) {
                 throw err;
@@ -23,6 +17,44 @@ export class StatusesRepository {
             throw ApiError.databaseError("Error find status", err);
         }
     }
+
+
+    async findAll(filter: any) {
+        try{
+            logger.info("StatusesRepository::findAll")
+            const status = await this._db.Status.findAll({
+                where: filter  // фильтрация по любому полю
+            });
+            if (!status) {
+                throw ApiError.notFoundError(`Statuses by filter: ${JSON.stringify(filter)} not found`);
+            }
+        } catch(err) {
+            if (err instanceof ApiError) {
+                throw err;
+            }
+            throw ApiError.databaseError("Error find statuses", err);
+        }
+    }
+
+    async findOne(filter: any) {
+        try{
+            logger.info("StatusesRepository::findOne")
+            const status = await this._db.Status.findOne({
+                where: filter  // фильтрация по любому полю
+            });
+            if (!status) {
+                throw ApiError.notFoundError(`Status by filter: ${JSON.stringify(filter)} not found`);
+            }
+            return status
+        } catch(err) {
+            if (err instanceof ApiError) {
+                throw err;
+            }
+            throw ApiError.databaseError("Error find status", err);
+        }
+    }
+
+
 
     async createOne(createStatus: IStatus) {
         try{
