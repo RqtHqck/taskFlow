@@ -21,7 +21,7 @@ export class StatusesRepository {
 
     async findAll(filter: any) {
         try{
-            logger.info("StatusesRepository::findAll")
+            logger.info(`StatusesRepository::findAll filter: ${JSON.stringify(filter)}`)
             const status = await this._db.Status.findAll({
                 where: filter  // фильтрация по любому полю
             });
@@ -38,7 +38,7 @@ export class StatusesRepository {
 
     async findOne(filter: any) {
         try{
-            logger.info("StatusesRepository::findOne")
+            logger.info(`StatusesRepository::findOne filter: ${JSON.stringify(filter)}`)
             const status = await this._db.Status.findOne({
                 where: filter  // фильтрация по любому полю
             });
@@ -56,15 +56,15 @@ export class StatusesRepository {
 
 
 
-    async createOne(createStatus: IStatus) {
+    async createOne(createStatusObj: IStatus) {
         try{
-            logger.info("StatusesRepository::createOne")
+            logger.info(`StatusesRepository::createOne dto:${JSON.stringify(createStatusObj)}`);
             const [status, created] = await this._db.Status.findOrCreate({
-                where: {name: createStatus.name},
-                defaults: createStatus
+                where: {name: createStatusObj.name},
+                defaults: createStatusObj
             });
             if (!created) {
-                throw ApiError.conflictError(`Status with {name: ${createStatus.name}} exists`);
+                throw ApiError.conflictError(`Status ${JSON.stringify(createStatusObj)} exists`);
             }
             return status;
         } catch(err) {
@@ -78,7 +78,7 @@ export class StatusesRepository {
 
     async createMany(createStatuses: IStatus[]) {
         try{
-            logger.info("StatusesRepository::createMany")
+            logger.info(`StatusesRepository::createMany dto ${JSON.stringify(createStatuses)}`);
             return await this._db.Status.bulkCreate(createStatuses);
         } catch(err) {
             if (err instanceof ApiError) {

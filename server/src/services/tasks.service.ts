@@ -1,6 +1,6 @@
 import {TasksRepository} from "@repositories/tasks.repository";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
-import {IStatus, ITask} from "@entities/interfaces";
+import { ITask } from "@entities/interfaces";
 import logger from "@utils/logger";
 import {StatusesService} from "@services/statuses.service";
 
@@ -25,7 +25,6 @@ export class TasksService {
             status = await this._statusesService.findOne({ name: "pending"});
         }
 
-
         // Create and return task
         const task: ITask = {
             title: createTaskDto.title,
@@ -34,5 +33,12 @@ export class TasksService {
             statusId: status.id
         }
         return await this._tasksRepository.create(task);
+    }
+
+
+    async getById(taskId: number) {
+        logger.info("TasksService::getById")
+        // Find task by id
+        return await this._tasksRepository.findByPk(taskId);
     }
 }

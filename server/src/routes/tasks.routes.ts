@@ -19,17 +19,12 @@ tasksRouter.post('/',
 // // Query Params date=date&fromDate=fromDate&toDate=toDate&status=status
 // tasksRouter.get('/',
 //     tasksController.getAll.bind(tasksController));
-//
-// // GET api/v1/tasks/:taskId
-// // Params taskId
-// tasksRouter.get('/:taskId',
-//     tasksController.getById.bind(tasksController));
-//
-// // GET api/v1/tasks/:taskId/status
-// // Params taskId
-// tasksRouter.get('/:taskId',
-//     tasksController.getTaskStatus.bind(tasksController));
-//
+
+// GET api/v1/tasks/:taskId
+// Params taskId
+tasksRouter.get('/:taskId',
+    tasksController.getById.bind(tasksController));
+
 // // PUT api/v1/tasks/:taskId
 // // Params taskId
 // // Body {title, description, comment, status}
