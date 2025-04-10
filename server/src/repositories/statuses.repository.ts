@@ -1,8 +1,6 @@
 import ApiError from "@errors/ApiError";
-import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
 import db from "@utils/sequelize";
-import IDatabase from "@entities/interfaces";
-import {Filterable} from "sequelize";
+import {IStatus} from "@entities/interfaces";
 import logger from "@utils/logger";
 
 export class StatusesRepository {
@@ -15,6 +13,19 @@ export class StatusesRepository {
             if (!status) {
                 throw ApiError.notFoundError(`Status ${statusName} not found`);
             }
+            return status;
+        } catch(err) {
+            if (err instanceof ApiError) {
+                throw err;
+            }
+            throw ApiError.databaseError("Error find status", err);
+        }
+    }
+
+    async createOne(createStatus: IStatus) {
+        try{
+            logger.info("StatusesRepository::create")
+            const status = await this._db.Status.create(createStatus);
             return status;
         } catch(err) {
             if (err instanceof ApiError) {

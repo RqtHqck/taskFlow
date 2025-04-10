@@ -1,8 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {TasksService} from "@services/tasks.service";
-import ApiError from "@errors/ApiError";
 import logger from "@utils/logger";
-import ITask from "../entities/interfaces";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
 
 export class TasksController {

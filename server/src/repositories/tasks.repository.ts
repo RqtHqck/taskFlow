@@ -1,7 +1,7 @@
 import ApiError from "@errors/ApiError";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
 import db from "@utils/sequelize";
-import ITask from "@entities/interfaces";
+import { ITask } from "@entities/interfaces";
 import logger from "@utils/logger";
 
 export class TasksRepository {
@@ -15,5 +15,4 @@ export class TasksRepository {
             throw ApiError.databaseError("Error create task", err);
         }
     }
-
 }

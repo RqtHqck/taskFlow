@@ -6,7 +6,7 @@ import db from './utils/sequelize'
     try {
         // DB
         await db.sequelize.authenticate({ logging: true });
-        db.sequelize.sync({ force: true, logging: true }).then(() => {
+        db.sequelize.sync({ force: false, logging: true }).then(() => {
             logger.info("Database synchronized");
         });
         // SERVER

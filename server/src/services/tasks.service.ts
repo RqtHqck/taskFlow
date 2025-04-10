@@ -1,7 +1,8 @@
 import {TasksRepository} from "@repositories/tasks.repository";
 import {StatusesRepository} from "@repositories/statuses.repository";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
-import ITask from "@entities/interfaces";
+import { ITask } from "@entities/interfaces";
+import { IStatus } from "@entities/interfaces";
 import logger from "@utils/logger";
 
 export class TasksService {
@@ -21,13 +22,13 @@ export class TasksService {
             status = await this._statusesRepository.findOneByName(createTaskDto.status);
         }
         status = await this._statusesRepository.findOneByName("pending");
-
+        console.log(JSON.stringify(status))
         // Create and return task
         const task: ITask = {
             title: createTaskDto.title,
             description: createTaskDto.description,
             comment: createTaskDto.comment || null,
-            status_id: status.id
+            statusId: status.id
         }
         return await this._tasksRepository.create(task);
     }
