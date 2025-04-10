@@ -22,7 +22,9 @@
       "@utils/*": ["utils/*"],
       "@entities/*": ["entities/*"],
       "@repositories/*": ["repositories/*"],
-      "@middlewares/*": ["middlewares/*"]
+      "@middlewares/*": ["middlewares/*"],
+      "@lib/*": ["lib/*"]
+
     }
   },
   "include": ["src/**/*.ts"],

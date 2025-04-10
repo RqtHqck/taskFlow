@@ -15,12 +15,4 @@ statusesRouter.post('/',
     validateBodyDto(CreateStatusDto),
     statusesController.createOne.bind(statusesController));
 
-
-// POST api/v1/statuses
-// Body [{name}, {name}, ..]
-statusesRouter.post('/',
-    validateBodyDto(CreateStatusDto, ),
-    statusesController.createMany.bind(statusesController));
-
-
 export default statusesRouter;
