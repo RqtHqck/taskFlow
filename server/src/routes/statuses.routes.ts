@@ -9,10 +9,18 @@ const statusesController = new StatusesController(statusesService);
 
 const statusesRouter = Router();
 
-// POST api/v1/tasks
-// Body {title, description, status}
+// POST api/v1/statuses
+// Body {name}
 statusesRouter.post('/',
     validateBodyDto(CreateStatusDto),
-    statusesController.create.bind(statusesController));
+    statusesController.createOne.bind(statusesController));
+
+
+// POST api/v1/statuses
+// Body [{name}, {name}, ..]
+statusesRouter.post('/',
+    validateBodyDto(CreateStatusDto, ),
+    statusesController.createMany.bind(statusesController));
+
 
 export default statusesRouter;

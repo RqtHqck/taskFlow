@@ -10,11 +10,11 @@ export class StatusesController {
         this._statusesService = statusesService;
     }
 
-    async create(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async createOne(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("StatusesController::create")
+            logger.info("StatusesController::createOne")
             const statusDto: CreateStatusDto = req.body;
-            const status = await this._statusesService.create(statusDto);
+            const status = await this._statusesService.createOne(statusDto);
             return res
                 .status(200)
                 .json({status});
@@ -23,4 +23,17 @@ export class StatusesController {
         }
     }
 
+
+    async createMany(req: Request, res: Response, next: NextFunction): Promise<any> {
+        try {
+            logger.info("StatusesController::createMany")
+            const statusesDto: CreateStatusDto[] = req.body;
+            const statuses = await this._statusesService.createMany(statusesDto);
+            return res
+                .status(200)
+                .json({statuses});
+        } catch (error) {
+            next(error);
+        }
+    }
 }

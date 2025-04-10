@@ -10,13 +10,22 @@ export class StatusesService {
         this._statusesRepository = new StatusesRepository();
     }
 
-    async create(createStatusDto: CreateStatusDto) {
-        logger.info("StatusesService::create")
+    async createOne(createStatusDto: CreateStatusDto) {
+        logger.info("StatusesService::createOne")
 
         // Create and return task
         const status: IStatus = {
             name: createStatusDto.name
         }
         return await this._statusesRepository.createOne(status);
+    }
+
+
+    async createMany(createStatusesDto: CreateStatusDto[]) {
+        logger.info("StatusesService::createMany")
+
+        // Create and return task
+        const statuses: IStatus[] = createStatusesDto.map(statusDto => ({ name: statusDto.name}) );
+        return await this._statusesRepository.createMany(statuses);
     }
 }

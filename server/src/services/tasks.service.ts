@@ -2,7 +2,6 @@ import {TasksRepository} from "@repositories/tasks.repository";
 import {StatusesRepository} from "@repositories/statuses.repository";
 import {CreateTaskDto} from "@entities/dto/CreateTaskDto";
 import { ITask } from "@entities/interfaces";
-import { IStatus } from "@entities/interfaces";
 import logger from "@utils/logger";
 
 export class TasksService {
@@ -19,10 +18,13 @@ export class TasksService {
         // Find task status if exists in CreateTaskDto
         let status;
         if (createTaskDto.status) {
+            logger.info(`Try find status: ${createTaskDto.status}`)
             status = await this._statusesRepository.findOneByName(createTaskDto.status);
+        } else {
+            logger.info(`Status default: ${createTaskDto.status}`)
+            status = await this._statusesRepository.findOneByName("pending");
         }
-        status = await this._statusesRepository.findOneByName("pending");
-        console.log(JSON.stringify(status))
+
         // Create and return task
         const task: ITask = {
             title: createTaskDto.title,

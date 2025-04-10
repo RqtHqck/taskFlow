@@ -22,5 +22,4 @@ export class TasksController {
             next(error);
         }
     }
-
 }

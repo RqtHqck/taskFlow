@@ -39,6 +39,10 @@ export default class ApiError extends Error {
         return new ApiError(500, message || "Database request error.", "DATABASE_REQUEST_ERROR", [], originalError);
     }
 
+    static conflictError(message?: string, originalError?: unknown) {
+        return new ApiError(409, message || "Conflict error.", "CONFLICT_ERROR", [], originalError);
+    }
+
     static notFoundError(message?: string, originalError?: unknown) {
         return new ApiError(404, message || "The requested resource was not found.", "NOT_FOUND", [], originalError);
     }
