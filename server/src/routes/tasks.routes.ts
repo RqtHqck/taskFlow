@@ -23,14 +23,16 @@ tasksRouter.post('/',
 // tasksRouter.get('/',
 //     tasksController.getAll.bind(tasksController));
 
+// PATCH api/v1/tasks/abortAll
+tasksRouter.patch('/abortAll',
+    tasksController.abortAll.bind(tasksController));
+
 // PATCH api/v1/tasks/:id
 // Body {status, comment?}
 tasksRouter.patch('/:id',
     validateBodyDto(PatchUpdateTaskFixedDto),
     tasksController.patchUpdateFixed.bind(tasksController));
 
-// PATCH api/v1/tasks/abortAll
-tasksRouter.patch('/abortAll',
-    tasksController.abortAll.bind(tasksController));
+
 
 export default tasksRouter;
