@@ -2,6 +2,7 @@ import ApiError from "@errors/ApiError";
 import db from "@utils/sequelize";
 import {ITask, ITaskUpdate} from "@entities/interfaces";
 import logger from "@utils/logger";
+import {Op} from "sequelize";
 
 
 export class TasksRepository {
@@ -11,11 +12,11 @@ export class TasksRepository {
         try{
             logger.info(`TasksRepository::create dto: ${JSON.stringify(createTaskObj)}`);
             const [task, created] = await this._db.Task.findOrCreate({
-                where: { title: createTaskObj.title },
+                where: { [ Op.or ]: [{ title: createTaskObj.title }, { description: createTaskObj.description }] },
                 defaults: createTaskObj
             });
             if (!created) {
-                throw ApiError.conflictError(`Task ${JSON.stringify(createTaskObj)} exists`);
+                throw ApiError.conflictError(`Task ${JSON.stringify(createTaskObj.title)} exists`);
             }
             return task;
         } catch(err) {
@@ -65,4 +66,30 @@ export class TasksRepository {
             throw ApiError.databaseError(`Error update task`, err);
         }
     }
+
+
+    async bulkUpdate(updateTaskObj: ITaskUpdate) {
+        try {
+            logger.info(`TasksRepository::bulkUpdate dto: ${JSON.stringify(updateTaskObj)}`);
+
+            const [affectedCount] = await this._db.Task.update(
+                updateTaskObj,
+                {
+                    where: {}, // обновит все записи
+                }
+            );
+
+            logger.info(`Affected fields count: ${affectedCount}`);
+            if (affectedCount === 0) {
+                throw ApiError.notFoundError("No tasks were updated.");
+            }
+            return { affectedCount };
+        } catch (err) {
+            if (err instanceof ApiError) {
+                throw err;
+            }
+            throw ApiError.databaseError(`Error updating tasks`, err);
+        }
+    }
+
 }

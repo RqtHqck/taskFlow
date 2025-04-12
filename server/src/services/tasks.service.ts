@@ -1,5 +1,5 @@
 import {TasksRepository} from "@repositories/tasks.repository";
-import {CreateTaskDto, UpdateTaskDto} from "@entities/dto/task.dto";
+import {CreateTaskDto, PatchUpdateAllTasksStatusDto, PatchUpdateTaskDto, UpdateTaskDto} from "@entities/dto/task.dto";
 import {ITask, ITaskUpdate} from "@entities/interfaces";
 import logger from "@utils/logger";
 import {StatusesService} from "@services/statuses.service";
@@ -46,20 +46,60 @@ export class TasksService {
     async update(updateTaskDto: UpdateTaskDto) {
         logger.info("TasksService::update")
         // Find task status if exists in CreateTaskDto
-        let status;
-        if (updateTaskDto.status) {
-            logger.info(`Try find status: ${updateTaskDto.status}`)
-            status = await this._statusesService.findOne({ name: updateTaskDto.status});
-        }
+        logger.info(`Try find status: ${updateTaskDto.status}`)
+        const status = await this._statusesService.findOne({ name: updateTaskDto.status});
+        // Object to update
         const updateObj: ITaskUpdate = {
             id: updateTaskDto.id,
             title: updateTaskDto.title,
             description: updateTaskDto.description,
             comment: updateTaskDto.comment,
+            statusId: status.id
         }
+        return await this._tasksRepository.update(updateObj);
+    }
+
+
+    async patchUpdate(patchUpdateTaskDto: PatchUpdateTaskDto) {
+        logger.info("TasksService::patchUpdate")
+
+        const updateObj: ITaskUpdate = {
+            id: patchUpdateTaskDto.id
+        };
+
+        if (patchUpdateTaskDto.title) {
+            updateObj.title = patchUpdateTaskDto.title;
+        }
+        if (patchUpdateTaskDto.description) {
+            updateObj.description= patchUpdateTaskDto.description;
+        }
+        if (patchUpdateTaskDto.comment) {
+            updateObj.comment = patchUpdateTaskDto.comment;
+        }
+
+        // Find task status if exists in CreateTaskDto
+        let status;
+        if (patchUpdateTaskDto.status) {
+            logger.info(`Try find status: ${patchUpdateTaskDto.status}`)
+            status = await this._statusesService.findOne({ name: patchUpdateTaskDto.status});
+        }
+
         if (status && status.id) {
             updateObj.statusId = status.id
         }
         return await this._tasksRepository.update(updateObj);
     }
+
+
+    async bulkAbortAll() {
+        logger.info("TasksService::bulkUpdate")
+        // Find task status if exists in CreateTaskDto
+        logger.info(`Try find status: aborted`)
+        const status = await this._statusesService.findOne({ name: "aborted" });
+        const updateObj: ITaskUpdate = {
+            statusId: status.id
+        }
+        return await this._tasksRepository.bulkUpdate(updateObj);
+    }
+
 }

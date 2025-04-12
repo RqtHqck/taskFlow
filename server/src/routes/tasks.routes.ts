@@ -2,7 +2,12 @@ import { Router } from 'express';
 import {TasksController} from "@controllers/tasks.controller";
 import {TasksService} from "@services/tasks.service";
 import {validateBodyDto} from "@middlewares/validators/validateDto.middleware";
-import {CreateTaskDto, UpdateTaskDto} from "@entities/dto/task.dto";
+import {
+    CreateTaskDto,
+    UpdateTaskDto,
+    PatchUpdateTaskDto,
+    PatchUpdateAllTasksStatusDto
+} from "@entities/dto/task.dto";
 
 const tasksService = new TasksService();
 const tasksController = new TasksController(tasksService);
@@ -25,27 +30,26 @@ tasksRouter.post('/',
 tasksRouter.get('/:taskId',
     tasksController.getById.bind(tasksController));
 
-// PUT api/v1/tasks/:taskId
-// Params taskId
+// PUT api/v1/tasks/
 // Body {title, description, comment, status}
 tasksRouter.put('/',
     validateBodyDto(UpdateTaskDto),
     tasksController.update.bind(tasksController));
-//
-// // PATCH api/v1/tasks/:taskId/status
-// // Params taskId
-// // Body {status, comment}
-// tasksRouter.patch('/:taskId',
-//     tasksController.updateTaskStatusWithResponse.bind(tasksController));
-//
-// // PATCH api/v1/tasks/status
-// // Body {status}
-// tasksRouter.patch('/:taskId',
-//     tasksController.updateManyStatusesToPending.bind(tasksController));
-//
+
+// PATCH api/v1/tasks/
+// Body {status, comment}
+tasksRouter.patch('/',
+    validateBodyDto(PatchUpdateTaskDto),
+    tasksController.patchUpdate.bind(tasksController));
+
+// PATCH api/v1/tasks/status
+// Body {status}
+tasksRouter.patch('/abortAll',
+    tasksController.bulkAbortAll.bind(tasksController));
+
 // // PATCH api/v1/tasks/status
 // // Params taskId
 // tasksRouter.delete('/:taskId',
-//     tasksController.deleteById.bind(tasksController));
+//     tasksController.deleteById.bind(tasksController) );
 
 export default tasksRouter;
