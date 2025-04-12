@@ -4,7 +4,7 @@ export interface ITask {
     id?: number;
     title: string;
     description: string;
-    comment?: string | null;
+    comment?: string;
     statusId: number;
 }
 
@@ -14,5 +14,3 @@ export interface IStatus {
     id?: number;
     name: StatusEnum;
 }
-
-export interface ITaskUpdate extends Partial<IStatus> {}

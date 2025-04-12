@@ -2,10 +2,7 @@ import {NextFunction, Request, Response} from 'express';
 import {TasksService} from "@services/tasks.service";
 import logger from "@utils/logger";
 import {
-    CreateTaskDto,
-    PatchUpdateAllTasksStatusDto,
-    PatchUpdateTaskDto,
-    UpdateTaskDto,
+    CreateTaskDto, PatchUpdateTaskFixedDto,
 } from "@entities/dto/task.dto";
 import ApiError from "@errors/ApiError";
 
@@ -30,42 +27,16 @@ export class TasksController {
     }
 
 
-    async getById(req: Request, res: Response, next: NextFunction): Promise<any> {
-        try {
-            logger.info("TasksController::getById")
-            const taskId = parseInt(req.params.taskId, 10);
-            if (isNaN(taskId)) {
-                throw ApiError.badRequestError("TaskId must be type of integer");
-            }
-            const task = await this._taskService.getById(taskId);
-            return res
-                .status(200)
-                .json({task});
-        } catch (error) {
-            next(error);
-        }
-    }
-
-
-    async update(req: Request, res: Response, next: NextFunction): Promise<any> {
-        try {
-            logger.info("TasksController::update")
-            const updateTaskDto: UpdateTaskDto = req.body;
-            const task = await this._taskService.update(updateTaskDto);
-            return res
-                .status(204)
-                // .json({task});
-        } catch (error) {
-            next(error);
-        }
-    }
-
-
-    async patchUpdate(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async patchUpdateFixed(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::patchUpdate")
-            const patchUpdateTaskDto: PatchUpdateTaskDto = req.body;
-            const task = await this._taskService.patchUpdate(patchUpdateTaskDto);
+            const id = parseInt(req.params.id, 10);
+            if (isNaN(id) || id <= 0) {
+                throw ApiError.badRequestError("Task Id is not valid or not provided")
+            }
+            const patchUpdateTaskDto: PatchUpdateTaskFixedDto = req.body;
+
+            const task = await this._taskService.patchUpdate(id, patchUpdateTaskDto);
             return res
                 .status(204)
                 .end()
@@ -76,10 +47,10 @@ export class TasksController {
     }
 
 
-    async bulkAbortAll(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async abortAll(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("TasksController::bulkAbortAll")
-            const tasks = await this._taskService.bulkAbortAll();
+            logger.info("TasksController::abortAll")
+            const tasks = await this._taskService.abortAll();
             return res
                 .status(204)
                 .end()
