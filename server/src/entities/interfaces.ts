@@ -14,3 +14,9 @@ export interface IStatus {
     id?: number;
     name: StatusEnum;
 }
+
+export interface IGetAllRequestFilter {
+    date?: Date;
+    dateFrom?: Date;
+    dateTo?: Date;
+}

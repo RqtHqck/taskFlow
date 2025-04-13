@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import {TasksController} from "@controllers/tasks.controller";
 import {TasksService} from "@services/tasks.service";
-import {validateBodyDto} from "@middlewares/validators/validateDto.middleware";
+
 import {
     CreateTaskDto,
     PatchUpdateTaskFixedDto,
 } from "@entities/dto/task.dto";
+import {validateRequestQueryParamsMiddleware} from "@middlewares/validators/validateRequestQueryParams.middleware";
+import {validateBodyDto} from "@middlewares/validators/validateDto.middleware";
 
 const tasksService = new TasksService();
 const tasksController = new TasksController(tasksService);
@@ -18,10 +20,11 @@ tasksRouter.post('/',
     validateBodyDto(CreateTaskDto),
     tasksController.create.bind(tasksController));
 
-// // GET api/v1/tasks
-// // Query Params date=date&fromDate=fromDate&toDate=toDate&status=status
-// tasksRouter.get('/',
-//     tasksController.getAll.bind(tasksController));
+// GET api/v1/tasks
+// Query Params date=date&fromDate=fromDate&toDate=toDate&status=status
+tasksRouter.get('/',
+    validateRequestQueryParamsMiddleware(),
+    tasksController.getAll.bind(tasksController));
 
 // PATCH api/v1/tasks/abortAll
 tasksRouter.patch('/abortAll',
