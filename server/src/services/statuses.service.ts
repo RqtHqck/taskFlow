@@ -21,11 +21,8 @@ export class StatusesService {
     async createMany() {
         logger.info("StatusesService::createMany")
         const allowedStatusNames = [...Object.values(StatusEnum)]
-        console.log(allowedStatusNames)
         // Create and return statuses
         let statuses: IStatus[] = allowedStatusNames.map((name: StatusEnum): IStatus => ({ name }));
-        console.log(statuses)
-
         await this._statusesRepository.createMany(statuses);
     }
 }

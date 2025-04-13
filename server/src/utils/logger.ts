@@ -2,7 +2,7 @@ const { createLogger, format, transports } = require("winston");
 
 // Logger configuration
 const logger = createLogger({
-  level: process.env.NODE_ENV === "production" ? "info" : "debug",
+  level: process.env.NODE_ENV === "prod" ? "info" : "debug",
   format: format.combine(
     format.timestamp(),
     format.errors({ stack: true }),

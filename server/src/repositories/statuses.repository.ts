@@ -28,6 +28,7 @@ export class StatusesRepository {
     async createMany(createStatuses: IStatus[]) {
         try{
             logger.info(`StatusesRepository::createMany dto ${JSON.stringify(createStatuses)}`);
+            // If exists ignore
             await this._db.Status.bulkCreate(createStatuses, { ignoreDuplicates: true });
         } catch(err) {
             if (err instanceof ApiError) {
