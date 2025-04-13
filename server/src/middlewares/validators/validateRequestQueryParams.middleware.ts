@@ -10,7 +10,7 @@ const getAllRequestSchema = Joi.object({
     dateTo: Joi.date().iso().greater(Joi.ref('dateFrom')).max('now').optional(),
 })
 
-export const validateRequestQueryParamsMiddleware = () => {
+export const validateRequestQueryParams = () => {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const filter: IGetAllRequestFilter = req.query;
         const allowedKeys = ['date', 'dateFrom', 'dateTo'];

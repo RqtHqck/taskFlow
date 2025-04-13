@@ -1,7 +1,7 @@
 import {TasksRepository} from "@repositories/tasks.repository";
 import {
-    CreateTaskDto,
-    PatchUpdateTaskFixedDto,
+    AbortTaskDto,
+    CreateTaskDto, DoneTaskDto,
 } from "@entities/dto/task.dto";
 import {IGetAllRequestFilter, IStatus, ITask, ITaskUpdate} from "@entities/interfaces";
 import logger from "@utils/logger";
@@ -17,14 +17,14 @@ export class TasksService {
         this._statusesService = new StatusesService();
     }
 
-    async create(createTaskDto: CreateTaskDto) {
-        logger.info("TasksService::create")
+    async createTask(dto: CreateTaskDto) {
+        logger.info("TasksService::createTask")
         // Find status
         const status: IStatus = await this._statusesService.findOne({ name: StatusEnum.PENDING });
         // Create and return task
         const createObj: ITask = {
-            title: createTaskDto.title,
-            description: createTaskDto.description,
+            title: dto.title,
+            description: dto.description,
             statusId: status.id!
         }
         const filter = { title: createObj.title }
@@ -32,8 +32,8 @@ export class TasksService {
     }
 
 
-    async getAll(filter: IGetAllRequestFilter) {
-        logger.info("TasksService::getAll");
+    async getAllTasks(filter: IGetAllRequestFilter) {
+        logger.info("TasksService::getAllTasks");
         if (Object.keys(filter).length == 0) {
             return await this._tasksRepository.getAll();
         }
@@ -42,25 +42,40 @@ export class TasksService {
     }
 
 
+    async processTask(id: number) {
+        logger.info("TasksService::processTask");
 
+        const status: IStatus = await this._statusesService.findOne({ name: StatusEnum.PROCESSING }); // Find PROCESSING status
+        const updateObj: ITaskUpdate = {id, statusId: status.id}; // Update obj
 
-    async patchUpdate(id: number, patchDto: PatchUpdateTaskFixedDto) {
-        logger.info("TasksService::patchUpdate")
-
-        const updateObj: ITaskUpdate = { id };
-        if (patchDto.comment) {
-            updateObj.comment = patchDto.comment
-        }
-        // Find task status
-        const status: IStatus = await this._statusesService.findOne({ name: patchDto.status});
-        updateObj.statusId = status.id!
-        const filter = { id: updateObj.id }
-        return await this._tasksRepository.update(updateObj, filter);
+        return await this._tasksRepository.update(updateObj, id);
     }
 
 
-    async abortAll() {
-        logger.info("TasksService::abortAll")
+    async doneTask(id: number, dto: DoneTaskDto) {
+        logger.info("TasksService::doneTask");
+
+        const status: IStatus = await this._statusesService.findOne({ name: StatusEnum.DONE }); // Find DONE status
+        const updateObj: ITaskUpdate = {id, statusId: status.id, }; // Update obj
+        if (dto.comment) updateObj.comment = dto.comment;
+
+        return await this._tasksRepository.update(updateObj, id);
+    }
+
+
+    async abortTask(id: number, dto: AbortTaskDto) {
+        logger.info("TasksService::abortTask");
+
+        const status: IStatus = await this._statusesService.findOne({ name: StatusEnum.ABORTED }); // Find DONE status
+        const updateObj: ITaskUpdate = {id, statusId: status.id, }; // Update obj
+        if (dto.comment) updateObj.comment = dto.comment;
+
+        return await this._tasksRepository.update(updateObj, id);
+    }
+
+
+    async abortAllTasks() {
+        logger.info("TasksService::abortAllTasks")
         const statusAbort: IStatus = await this._statusesService.findOne({ name: StatusEnum.ABORTED });
         const statusProcessing: IStatus = await this._statusesService.findOne({ name: StatusEnum.PROCESSING });
 

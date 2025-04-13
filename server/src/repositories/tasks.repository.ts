@@ -64,13 +64,13 @@ export class TasksRepository {
     }
 
 
-    async update(updateTaskObj: ITaskUpdate, filter: object | {}) {
+    async update(updateObj: ITaskUpdate, id: number) {
         try{
-            logger.info(`TasksRepository::update dto: ${JSON.stringify(updateTaskObj)}, filter: ${JSON.stringify(filter)}`)
+            logger.info(`TasksRepository::update dto: ${JSON.stringify(updateObj)}, id: ${id}`)
 
             const [affectedCount, updatedTasks] = await this._db.Task.update(
-                updateTaskObj, {
-                    where: filter,
+                updateObj, {
+                    where: {id},
                     returning: true
                 }
             );

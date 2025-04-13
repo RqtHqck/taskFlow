@@ -2,7 +2,8 @@ import {NextFunction, Request, Response} from 'express';
 import {TasksService} from "@services/tasks.service";
 import logger from "@utils/logger";
 import {
-    CreateTaskDto, PatchUpdateTaskFixedDto,
+    AbortTaskDto,
+    CreateTaskDto, DoneTaskDto,
 } from "@entities/dto/task.dto";
 import ApiError from "@errors/ApiError";
 import {IGetAllRequestFilter} from "@entities/interfaces";
@@ -14,11 +15,11 @@ export class TasksController {
         this._taskService = taskService;
     }
 
-    async create(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async createTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::create")
             const createTaskDto: CreateTaskDto = req.body;
-            const tasks = await this._taskService.create(createTaskDto);
+            const tasks = await this._taskService.createTask(createTaskDto);
             return res
                 .status(201)
                 .json({tasks});
@@ -28,11 +29,11 @@ export class TasksController {
     }
 
 
-    async getAll(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async getAllTasks(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::getAll")
             const filter: IGetAllRequestFilter = req.query;
-            const tasks = await this._taskService.getAll(filter);
+            const tasks = await this._taskService.getAllTasks(filter);
             return res
                 .status(200)
                 .json({tasks});
@@ -42,17 +43,12 @@ export class TasksController {
     }
 
 
-
-    async patchUpdateFixed(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async processTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("TasksController::patchUpdate")
+            logger.info("TasksController::processTask")
             const id = parseInt(req.params.id, 10);
-            if (isNaN(id) || id <= 0) {
-                throw ApiError.badRequestError("Task Id is not valid or not provided")
-            }
-            const patchUpdateTaskDto: PatchUpdateTaskFixedDto = req.body;
 
-            const task = await this._taskService.patchUpdate(id, patchUpdateTaskDto);
+            const task = await this._taskService.processTask(id);
             return res
                 .status(204)
                 .end()
@@ -63,10 +59,44 @@ export class TasksController {
     }
 
 
-    async abortAll(req: Request, res: Response, next: NextFunction): Promise<any> {
+    async doneTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
-            logger.info("TasksController::abortAll")
-            const tasks = await this._taskService.abortAll();
+            logger.info("TasksController::doneTask")
+            const id = parseInt(req.params.id, 10);
+            const dto: DoneTaskDto = req.body;
+
+            const task = await this._taskService.doneTask(id, dto);
+            return res
+                .status(204)
+                .end()
+            // .json({task});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async abortTask(req: Request, res: Response, next: NextFunction): Promise<any> {
+        try {
+            logger.info("TasksController::abortTask")
+            const id = parseInt(req.params.id, 10);
+            const dto: AbortTaskDto = req.body;
+
+            const task = await this._taskService.abortTask(id, dto);
+            return res
+                .status(204)
+                .end()
+            // .json({task});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async abortAllTask(req: Request, res: Response, next: NextFunction): Promise<any> {
+        try {
+            logger.info("TasksController::abortAllTasks")
+            const tasks = await this._taskService.abortAllTasks();
             return res
                 .status(204)
                 .end()

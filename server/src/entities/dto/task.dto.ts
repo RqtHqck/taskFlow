@@ -22,14 +22,19 @@ export class CreateTaskDto {
 }
 
 
-export class PatchUpdateTaskFixedDto {
+export class DoneTaskDto {
     @IsString()
     @IsOptional()
     comment?: string;
-
-    @IsEnum(StatusEnum)
-    status!: StatusEnum
 }
+
+
+export class AbortTaskDto {
+    @IsString()
+    @IsOptional()
+    comment?: string;
+}
+
 
 export class TaskDto {
     @Expose()
