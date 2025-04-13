@@ -2,7 +2,6 @@ import { Sequelize } from "sequelize-typescript";
 import dbConfig from "@config/dbConfig";
 import Task from "@models/task.model"
 import Status from "@models/status.model";
-import logger from "@utils/logger";
 
 
 const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
@@ -15,13 +14,6 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passw
     models: dbConfig.models,
 });
 
-(async ()=>{
-    await sequelize.authenticate({ logging: true });
-    sequelize.sync({ force: false, logging: true }).then(() => {
-        logger.info("Database synchronized");
-    });
-
-})()
 
 const db = {
     sequelize,
