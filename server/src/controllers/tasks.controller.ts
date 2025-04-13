@@ -5,6 +5,7 @@ import {
     CreateTaskDto, PatchUpdateTaskFixedDto,
 } from "@entities/dto/task.dto";
 import ApiError from "@errors/ApiError";
+import {IGetAllRequestFilter} from "@entities/interfaces";
 
 export class TasksController {
     private _taskService: TasksService;
@@ -25,6 +26,21 @@ export class TasksController {
             next(error);
         }
     }
+
+
+    async getAll(req: Request, res: Response, next: NextFunction): Promise<any> {
+        try {
+            logger.info("TasksController::getAll")
+            const filter: IGetAllRequestFilter = req.query;
+            const tasks = await this._taskService.getAll(filter);
+            return res
+                .status(200)
+                .json({tasks});
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
 
     async patchUpdateFixed(req: Request, res: Response, next: NextFunction): Promise<any> {

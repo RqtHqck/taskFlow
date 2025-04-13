@@ -6,48 +6,44 @@ import {
     PrimaryKey,
     AllowNull,
     AutoIncrement,
-    Default, NotNull, ForeignKey, BelongsTo
+    Default, NotNull, ForeignKey, BelongsTo, Unique, CreatedAt
 } from 'sequelize-typescript';
 
 import StatusModel from "@models/status.model";
-import {Optional} from "sequelize";
-
-
-interface TaskAttributes {
-    id: number;
-    title: string;
-    description: string;
-    comment: string;
-    status_id: number;
-};
-
-interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
+import {InferAttributes, InferCreationAttributes} from "sequelize";
 
 
 @Table({
-    timestamps: true,
+    timestamps: false,
     paranoid: false,
     tableName: 'tasks',
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
     modelName: 'task',
-
+    charset: 'utf8',
+    collate: 'utf8_general_ci'
 })
-class Task extends Model<TaskAttributes, TaskCreationAttributes> {
+class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
     @PrimaryKey
     @AutoIncrement
     @Column
     declare id: number;
 
+    @Unique
     @AllowNull(false)
     @Column({
         type: DataType.STRING(256),
+        validate: {
+            notEmpty: true,
+        }
     })
     declare title: string;
+
 
     @AllowNull(false)
     @Column({
         type: DataType.TEXT,
+        validate: {
+            notEmpty: true,
+        }
     })
     declare description: string;
 
@@ -72,6 +68,18 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> {
         targetKey: 'id'         // в таблице statuses
     })
     declare status: StatusModel;
+
+    @CreatedAt
+    @Default(DataType.NOW)
+    @Column({
+        type: DataType.DATEONLY,
+        field: 'created_at',
+        validate: {
+            notEmpty: true,
+            isDate: true,
+        },
+    })
+    declare createdAt: Date
 }
 
 export default Task;
