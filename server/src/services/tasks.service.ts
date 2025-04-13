@@ -3,7 +3,7 @@ import {
     CreateTaskDto,
     PatchUpdateTaskFixedDto,
 } from "@entities/dto/task.dto";
-import {IGetAllRequestFilter, IStatus, ITask, ITaskUpdate} from "@entities/interfaces";
+import {IStatus, ITask, ITaskUpdate} from "@entities/interfaces";
 import logger from "@utils/logger";
 import {StatusesService} from "@services/statuses.service";
 import {StatusEnum} from "@entities/enums";
@@ -22,26 +22,13 @@ export class TasksService {
         // Find status
         const status: IStatus = await this._statusesService.findOne({ name: StatusEnum.PENDING });
         // Create and return task
-        const createObj: ITask = {
+        const taskObj: ITask = {
             title: createTaskDto.title,
             description: createTaskDto.description,
             statusId: status.id!
         }
-        const filter = { title: createObj.title }
-        return await this._tasksRepository.create(createObj, filter);
+        return await this._tasksRepository.create(taskObj);
     }
-
-
-    async getAll(filter: IGetAllRequestFilter) {
-        logger.info("TasksService::getAll");
-        if (Object.keys(filter).length == 0) {
-            return await this._tasksRepository.getAll();
-        }
-        return await this._tasksRepository.getAll(filter);
-
-    }
-
-
 
 
     async patchUpdate(id: number, patchDto: PatchUpdateTaskFixedDto) {
@@ -54,23 +41,18 @@ export class TasksService {
         // Find task status
         const status: IStatus = await this._statusesService.findOne({ name: patchDto.status});
         updateObj.statusId = status.id!
-        const filter = { id: updateObj.id }
-        return await this._tasksRepository.update(updateObj, filter);
+
+        return await this._tasksRepository.update(updateObj);
     }
 
 
     async abortAll() {
         logger.info("TasksService::abortAll")
-        const statusAbort: IStatus = await this._statusesService.findOne({ name: StatusEnum.ABORTED });
-        const statusProcessing: IStatus = await this._statusesService.findOne({ name: StatusEnum.PROCESSING });
-
+        const status: IStatus = await this._statusesService.findOne({ name: StatusEnum.ABORTED });
         const updateObj: ITaskUpdate = {
-            statusId: statusAbort.id!
+            statusId: status.id!
         }
-        const filter = {
-            statusId: statusProcessing.id
-        }
-
-        return await this._tasksRepository.bulkUpdate(updateObj, filter);
+        return await this._tasksRepository.bulkUpdate(updateObj);
     }
+
 }
