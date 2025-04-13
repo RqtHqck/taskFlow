@@ -2,7 +2,7 @@ import { ErrorRequestHandler } from "express";
 import ApiError from "@errors/ApiError";
 import logger from "@utils/logger";
 
-const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
+export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     if (error instanceof ApiError) {
         logger.error(`API Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message} ///Error trace: ${error.stack ? error.stack : ''}`);
         res.status(error.status).json({
@@ -27,5 +27,3 @@ const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     });
     return; // Завершаем выполнение для Internal Server Error
 };
-
-export default ErrorHandler;
