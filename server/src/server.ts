@@ -13,8 +13,7 @@ import db from './utils/sequelize'
         app.listen(process.env.PORT, () => {
             console.log(`Server started on http://localhost:${process.env.PORT}`);
         });
-    } catch (error: any) {
-        logger.error(`${error}`);
-        // process.exit(1);
+    } catch (error) {
+        logger.error(error);
     }
 })();

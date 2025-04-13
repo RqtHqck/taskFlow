@@ -8,25 +8,24 @@ export default class ApiError extends Error {
         message: string,
         code: string,
         details: string[] = [],
-        originalError?: unknown // Сделаем originalError типом unknown
+        originalError?: unknown 
     ) {
-        super(message); // Устанавливаем сообщение ошибки
-        this.name = this.constructor.name; // Указываем имя класса
-        this.status = status; // HTTP-статус ошибки
-        this.code = code; // Код ошибки
-        this.details = details.length > 0 ? details : null; // Дополнительные детали ошибки
+        super(message); // message set
+        this.name = this.constructor.name; // Class name
+        this.status = status; // HTTP-status
+        this.code = code; // Codes
+        this.details = details.length > 0 ? details : null; // Validation details or else
 
-        // Если передана оригинальная ошибка, проверяем её тип и добавляем стек
+        // If original error -> set stack 'Caused by'
         if (originalError) {
             const safeError = originalError instanceof Error ? originalError : new Error(String(originalError));
             this.stack += `\nCaused by: ${safeError.stack}`;
         }
 
-        // Устанавливаем прототип для корректного наследования
         Object.setPrototypeOf(this, new.target.prototype);
     }
 
-    // Методы для создания предопределённых типов ошибок
+    // Error handling particular types of errors
     static validationError(message: string, details: string[] = [], originalError?: unknown) {
         return new ApiError(400, message, "VALIDATION_ERROR", details, originalError);
     }

@@ -35,7 +35,9 @@ class Status extends Model<StatusAttributes, StatusCreationAttributes> {
 
     @Unique
     @AllowNull(false)
-    @Column(DataType.STRING)
+    @Column({
+        type: DataType.ENUM(...Object.values(StatusEnum)),
+    })
     declare name: StatusEnum;
 
     @HasMany(() => Task, {

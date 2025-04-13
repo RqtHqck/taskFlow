@@ -30,9 +30,10 @@ class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
     @Unique
     @AllowNull(false)
     @Column({
-        type: DataType.STRING(256),
+        type: DataType.STRING(255),
         validate: {
             notEmpty: true,
+            max: 255
         }
     })
     declare title: string;
@@ -48,7 +49,7 @@ class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
     declare description: string;
 
     @AllowNull(true)
-    @Default('')
+    @Default(null)
     @Column({
         type: DataType.TEXT,
     })
@@ -56,7 +57,7 @@ class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
 
     @AllowNull(false)
     @NotNull
-    @ForeignKey(() => StatusModel) // Указываем, что это внешний ключ
+    @ForeignKey(() => StatusModel) 
     @Column({
         type: DataType.INTEGER,
         field: 'status_id'
@@ -64,8 +65,8 @@ class Task extends Model<InferAttributes<Task>, InferCreationAttributes<Task>> {
     declare statusId: number;
 
     @BelongsTo(() => StatusModel, {
-        foreignKey: 'status_id', // в таблице tasks
-        targetKey: 'id'         // в таблице statuses
+        foreignKey: 'status_id',
+        targetKey: 'id'
     })
     declare status: StatusModel;
 

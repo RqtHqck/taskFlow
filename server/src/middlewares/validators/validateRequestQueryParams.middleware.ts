@@ -26,7 +26,6 @@ export const validateRequestQueryParamsMiddleware = () => {
             next(ApiError.validationError("Wrong request query parameters.", errorsStringArray, result.error))
         }
 
-        // Check if hasDate or hasDateRange on fields date, dateFrom, dateTo
         const hasDate = !!filter.date;
         const hasDateFrom = !!filter.dateFrom;
         const hasDateTo = !!filter.dateTo;

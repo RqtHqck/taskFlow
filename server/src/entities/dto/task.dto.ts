@@ -4,22 +4,20 @@ import {
     IsEnum,
     MinLength,
     IsNotEmpty,
-    MaxLength
+    MaxLength, IsNumber, IsDate
 } from 'class-validator';
 import { StatusEnum } from "@entities/enums";
+import {Exclude, Expose} from "class-transformer";
 
 
 export class CreateTaskDto {
     @IsString()
     @IsNotEmpty({ message: 'Title should not be empty' })
-    @MinLength(3, { message: 'Title should not be less then 3 symbols' })
-    @MaxLength(100, { message: 'Title should not be grater then 100 symbols' })
+    @MaxLength(255, { message: 'Title should not be grater then 255 symbols' })
     title!: string;
 
     @IsString()
     @IsNotEmpty({ message: 'Description should not be empty' })
-    @MinLength(10, { message: 'Description should not be less then 10 symbols' })
-    @MaxLength(1000, { message: 'Description should not be grater then 1000 symbols' })
     description!: string;
 }
 
@@ -27,10 +25,42 @@ export class CreateTaskDto {
 export class PatchUpdateTaskFixedDto {
     @IsString()
     @IsOptional()
-    @MinLength(10, { message: 'Comment should not be less then 10 symbols' })
-    @MaxLength(2000, { message: 'Comment should not be grater then 2000 symbols' })
     comment?: string;
 
     @IsEnum(StatusEnum)
     status!: StatusEnum
+}
+
+export class TaskDto {
+    @Expose()
+    @IsNumber()
+    id!: number;
+
+    @Expose()
+    @IsString()
+    @IsNotEmpty()
+    title!: string;
+
+    @Expose()
+    @IsString()
+    @IsNotEmpty()
+    description!: string;
+
+    @Expose()
+    @IsString()
+    @IsNotEmpty()
+    comment!: string;
+
+    @Expose()
+    @IsNumber()
+    statusId!: string;
+
+    @Exclude()
+    @IsNumber()
+    status_id!: string;
+
+
+    @Expose()
+    @IsDate()
+    createdAt!: Date | string;
 }

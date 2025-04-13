@@ -8,7 +8,9 @@
     "start:dev": "cross-env NODE_ENV=dev tsc --project tsconfig.json && cross-env NODE_ENV=dev nodemon dist/server.js",
     "start:ts-node-dev": "cross-env NODE_ENV=dev ts-node --project tsconfig.json -r tsconfig-paths/register src/server.ts",
     "start:prod": "cross-env NODE_ENV=prod tsc --project tsconfig.json && cross-env NODE_ENV=prod node dist/server.js",
-    "start:diagnostic": "cross-env NODE_ENV=dev tsc --project tsconfig.json --diagnostics && cross-env NODE_ENV=dev node --trace-deprecation --trace-warnings dist/server.js"
+    "start:diagnostic": "cross-env NODE_ENV=dev tsc --project tsconfig.json --diagnostics && cross-env NODE_ENV=dev node --trace-deprecation --trace-warnings dist/server.js",
+    "migrate": "sequelize-cli db:migrate --require ts-node/register",
+    "seed": "sequelize-cli db:seed:all --require ts-node/register"
   },
   "repository": {
     "type": "git",
@@ -54,6 +56,7 @@
     "cross-env": "^7.0.3",
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.9",
+    "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

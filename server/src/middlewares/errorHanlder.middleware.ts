@@ -4,6 +4,7 @@ import logger from "@utils/logger";
 
 export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     if (error instanceof ApiError) {
+        // ApiErrors throw
         logger.error(`API Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message} ///Error trace: ${error.stack ? error.stack : ''}`);
         res.status(error.status).json({
             success: false,
@@ -13,10 +14,10 @@ export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
                 details: error.details,
             },
         });
-        return; // Завершаем выполнение
+        return;
     }
 
-    // Обработка неожиданных ошибок
+    // Uncaught errors
     logger.error(`Uncaught Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message}\\\Error trace: ${error.stack ? error.stack : ''}`);
     res.status(500).json({
         success: false,
@@ -25,5 +26,5 @@ export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
             message: "An unexpected error occurred.",
         },
     });
-    return; // Завершаем выполнение для Internal Server Error
+    return;
 };

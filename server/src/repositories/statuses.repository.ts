@@ -23,7 +23,7 @@ export class StatusesRepository {
         try{
             logger.info(`StatusesRepository::findAll filter: ${JSON.stringify(filter)}`)
             const status = await this._db.Status.findAll({
-                where: filter  // фильтрация по любому полю
+                where: filter  
             });
             if (!status) {
                 throw ApiError.notFoundError(`Statuses by filter: ${JSON.stringify(filter)} not found`);

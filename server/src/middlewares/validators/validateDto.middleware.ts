@@ -8,11 +8,13 @@ export const validateBodyDto = (dtoClass: any) => {
     logger.info("Validate dto")
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
+            // Dto to class validator dto object
             const dtoInstance = plainToInstance(dtoClass, req.body);
+            // Catch errors
             const errors = await validate(dtoInstance, { whitelist: true, forbidNonWhitelisted: true });
 
             if (errors.length > 0) {
-                // Разбиваем ошибки на отдельные сообщения
+                // Array of errors
                 const errorMessages = errors.flatMap(err =>
                     Object.values(err.constraints || []).map(constraint => `${err.property}: ${constraint}`)
                 );

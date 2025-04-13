@@ -1,13 +1,13 @@
 const { createLogger, format, transports } = require("winston");
 
-// Конфигурация логгера
+// Logger configuration
 const logger = createLogger({
   level: process.env.NODE_ENV === "production" ? "info" : "debug",
   format: format.combine(
     format.timestamp(),
     format.errors({ stack: true }),
     format.splat(),
-    format.json() // Формат логов в JSON
+    format.json() // Log format to JSON
   ),
   transports: [
     new transports.File({
@@ -28,10 +28,10 @@ const logger = createLogger({
   exitOnError: false,
 });
 
-// Поток для использования с morgan
+// Using morgan stream
 logger.stream = {
   write: function (message: any): void {
-    // Убираем возможные проблемы с передачей строки в log
+    // Exclude string message providing
     logger.info({ message: message.trim() });
   },
 };
