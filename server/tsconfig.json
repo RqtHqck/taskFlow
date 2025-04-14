@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-//    "tsBuildInfoFile": "./.tsbuildinfo",
+    "tsBuildInfoFile": "./.tsbuildinfo",
     "incremental": true,
     "target": "ES6",
     "module": "CommonJS",

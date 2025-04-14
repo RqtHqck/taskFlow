@@ -10,6 +10,7 @@ import {plainToInstance} from "class-transformer";
 
 
 export class TasksController {
+
     private _taskService: TasksService;
 
     constructor(taskService: TasksService) {
@@ -19,6 +20,7 @@ export class TasksController {
     async createTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::create")
+
             const createTaskDto: CreateTaskDto = req.body;
             const task = await this._taskService.createTask(createTaskDto);
 
@@ -38,6 +40,7 @@ export class TasksController {
     async getAllTasks(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::getAll")
+
             const filter: IGetAllRequestFilter = req.query;
             const tasks = await this._taskService.getAllTasks(filter);
 
@@ -57,13 +60,13 @@ export class TasksController {
     async processTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::processTask")
-            const id = parseInt(req.params.id, 10);
 
+            const id = parseInt(req.params.id, 10);
             const task = await this._taskService.processTask(id);
+
             return res
                 .status(204)
                 .end()
-                // .json({task});
         } catch (error) {
             next(error);
         }
@@ -73,6 +76,7 @@ export class TasksController {
     async doneTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::doneTask")
+
             const id = parseInt(req.params.id, 10);
             const dto: DoneTaskDto = req.body;
 
@@ -80,7 +84,6 @@ export class TasksController {
             return res
                 .status(204)
                 .end()
-            // .json({task});
         } catch (error) {
             next(error);
         }
@@ -90,6 +93,7 @@ export class TasksController {
     async abortTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::abortTask")
+
             const id = parseInt(req.params.id, 10);
             const dto: AbortTaskDto = req.body;
 
@@ -97,7 +101,6 @@ export class TasksController {
             return res
                 .status(204)
                 .end()
-            // .json({task});
         } catch (error) {
             next(error);
         }
@@ -107,11 +110,12 @@ export class TasksController {
     async abortAllTask(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
             logger.info("TasksController::abortAllTasks")
+
             const tasks = await this._taskService.abortAllTasks();
+
             return res
                 .status(204)
                 .end()
-                // .json({tasks});
         } catch (error) {
             next(error);
         }

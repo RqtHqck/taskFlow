@@ -3,7 +3,6 @@ import dbConfig from "@config/dbConfig";
 import Task from "@models/task.model"
 import Status from "@models/status.model";
 
-
 const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
     host: dbConfig.host,
     port: dbConfig.port,
@@ -13,7 +12,6 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passw
     logging: dbConfig.logging,
     models: dbConfig.models,
 });
-
 
 const db = {
     sequelize,

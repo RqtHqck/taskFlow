@@ -6,6 +6,7 @@ import logger from "@utils/logger";
 
 export const validateBodyDto = (dtoClass: any) => {
     logger.info("Validate dto")
+
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             // Dto to class validator dto object

@@ -11,7 +11,9 @@ const getAllRequestSchema = Joi.object({
 })
 
 export const validateRequestQueryParams = () => {
+
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        
         const filter: IGetAllRequestFilter = req.query;
         const allowedKeys = ['date', 'dateFrom', 'dateTo'];
         const unknownKeys = Object.keys(filter).filter(key => !allowedKeys.includes(key));

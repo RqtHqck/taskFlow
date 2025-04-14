@@ -7,7 +7,6 @@ import {
     AllowNull, AutoIncrement,
     Unique, HasMany
 } from 'sequelize-typescript';
-
 import Task from '@models/task.model';
 import {Optional} from "sequelize";
 import {StatusEnum} from "@entities/enums";

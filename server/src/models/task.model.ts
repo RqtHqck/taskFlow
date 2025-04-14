@@ -8,7 +8,6 @@ import {
     AutoIncrement,
     Default, NotNull, ForeignKey, BelongsTo, Unique, CreatedAt
 } from 'sequelize-typescript';
-
 import StatusModel from "@models/status.model";
 import {InferAttributes, InferCreationAttributes} from "sequelize";
 

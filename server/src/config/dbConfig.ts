@@ -4,7 +4,6 @@ import Task from "@models/task.model";
 import Status from "@models/status.model";
 import path from "path";
 
-
 export interface IDbConfig {
     database: string;
     user: string;
@@ -22,7 +21,6 @@ export interface IDbConfig {
     logging: (msg: string) => any;
     models: string[];
 }
-
 
 const dbConfig: IDbConfig = {
     database: process.env.POSTGRES_DB!,

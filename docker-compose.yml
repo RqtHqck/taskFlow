@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8080:8080'
-    command:
-      ["npm", "run", "start:prod"]
     volumes:
       - ./server:/server
       - /server/node_modules:/server/node_modules
@@ -23,7 +21,7 @@ services:
     container_name: db
     image: postgres:15.2
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file:

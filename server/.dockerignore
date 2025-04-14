@@ -5,7 +5,7 @@ npm-debug.log
 # dotenv
 .env
 .env.*
-!.env.example  # Можно оставить пример env-файла
+!.env.example
 
 # build artifacts
 dist
@@ -20,5 +20,5 @@ Thumbs.db
 .git
 .gitignore
 
-# dockerignore itself (можно исключить, но не обязательно)
+# dockerignore itself
 .dockerignore

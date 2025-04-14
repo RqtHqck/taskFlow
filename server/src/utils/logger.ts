@@ -31,8 +31,7 @@ const logger = createLogger({
 // Using morgan stream
 logger.stream = {
   write: function (message: any): void {
-    // Exclude string message providing
-    logger.info({ message: message.trim() });
+    logger.info({ message: message.trim() }); // Exclude string message providing
   },
 };
 

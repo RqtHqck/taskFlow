@@ -64,7 +64,6 @@ export class TaskDto {
     @IsNumber()
     status_id!: string;
 
-
     @Expose()
     @IsDate()
     createdAt!: Date | string;

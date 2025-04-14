@@ -9,6 +9,7 @@ import {StatusesService} from "@services/statuses.service";
 import {StatusEnum} from "@entities/enums";
 
 export class TasksService {
+
     private _tasksRepository: TasksRepository;
     private _statusesService: StatusesService;
 
@@ -16,6 +17,7 @@ export class TasksService {
         this._tasksRepository = new TasksRepository();
         this._statusesService = new StatusesService();
     }
+
 
     async createTask(dto: CreateTaskDto) {
         logger.info("TasksService::createTask")

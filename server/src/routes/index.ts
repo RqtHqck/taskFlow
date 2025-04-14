@@ -3,8 +3,6 @@ import tasksRoutes from '@routes/tasks.routes';
 
 const router = Router();
 
-router
-    .use('/tasks', tasksRoutes)
-
+router.use('/tasks', tasksRoutes)
 
 export default router;

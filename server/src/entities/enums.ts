@@ -2,7 +2,7 @@ export enum StatusEnum {
     PENDING='pending',
     PROCESSING='processing',
     DONE='done',
-    ABORTED='aborted',
+    ABORTED='aborted'
 }
 
 export default {

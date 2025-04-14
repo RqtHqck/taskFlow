@@ -4,8 +4,8 @@ import logger from "@utils/logger";
 
 export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
 
+    // ApiErrors errors
     if (error instanceof ApiError) {
-        // ApiErrors throw
         logger.error(`API Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message} ///Error trace: ${error.stack ? error.stack : ''}`);
         res.status(error.status).json({
             success: false,
@@ -18,8 +18,9 @@ export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
         return;
     }
 
-    logger.error(`Syntax Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message}\\\Error trace: ${error.stack ? error.stack : ''}`);
+    // Syntax errors
     if (error instanceof SyntaxError && 'body' in error) {
+        logger.error(`Syntax Error in ${req.method} ${req.originalUrl}: ${error.message}\\\Error trace: ${error.stack ? error.stack : ''}`);
         res.status(400).json({
             success: false,
             error: {

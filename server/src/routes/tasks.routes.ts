@@ -49,6 +49,4 @@ tasksRouter.patch('/abort/:id',
     validateBodyDto(AbortTaskDto),
     tasksController.abortTask.bind(tasksController));
 
-
-
 export default tasksRouter;

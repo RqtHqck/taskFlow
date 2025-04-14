@@ -5,15 +5,16 @@ import {CreateStatusDto} from "@entities/dto/status.dto";
 import {StatusEnum} from "@entities/enums";
 
 export class StatusesService {
+
     private _statusesRepository: StatusesRepository;
 
     constructor() {
         this._statusesRepository = new StatusesRepository();
     }
 
+
     async findOne(filter: any) {
         logger.info("StatusesService::find")
-        // Find by filter
         return await this._statusesRepository.findOne(filter);
     }
 
@@ -21,7 +22,7 @@ export class StatusesService {
     async createMany() {
         logger.info("StatusesService::createMany")
         const allowedStatusNames = [...Object.values(StatusEnum)]
-        // Create and return statuses
+        // Create statuses by enum
         let statuses: IStatus[] = allowedStatusNames.map((name: StatusEnum): IStatus => ({ name }));
         await this._statusesRepository.createMany(statuses);
     }

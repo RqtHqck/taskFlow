@@ -6,7 +6,9 @@ import {Op} from "sequelize";
 
 
 export class TasksRepository {
+
     constructor(private _db: any = db) { }
+
 
     async create(createTaskObj: ITask, filter: object | {}) {
         try{
