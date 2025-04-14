@@ -3,6 +3,7 @@ import ApiError from "@errors/ApiError";
 import logger from "@utils/logger";
 
 export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
+
     if (error instanceof ApiError) {
         // ApiErrors throw
         logger.error(`API Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message} ///Error trace: ${error.stack ? error.stack : ''}`);
@@ -12,6 +13,18 @@ export const ErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
                 code: error.code,
                 message: error.message,
                 details: error.details,
+            },
+        });
+        return;
+    }
+
+    logger.error(`Syntax Error in ${req.method} ${req.originalUrl}: ${error.code} - ${error.message}\\\Error trace: ${error.stack ? error.stack : ''}`);
+    if (error instanceof SyntaxError && 'body' in error) {
+        res.status(400).json({
+            success: false,
+            error: {
+                code: "BAD_REQUEST",
+                message: "Syntax error occurred.",
             },
         });
         return;

@@ -3,10 +3,11 @@ import {TasksService} from "@services/tasks.service";
 import logger from "@utils/logger";
 import {
     AbortTaskDto,
-    CreateTaskDto, DoneTaskDto,
+    CreateTaskDto, DoneTaskDto, TaskDto,
 } from "@entities/dto/task.dto";
-import ApiError from "@errors/ApiError";
 import {IGetAllRequestFilter} from "@entities/interfaces";
+import {plainToInstance} from "class-transformer";
+
 
 export class TasksController {
     private _taskService: TasksService;
@@ -19,10 +20,15 @@ export class TasksController {
         try {
             logger.info("TasksController::create")
             const createTaskDto: CreateTaskDto = req.body;
-            const tasks = await this._taskService.createTask(createTaskDto);
+            const task = await this._taskService.createTask(createTaskDto);
+
+            const responseTask = plainToInstance(TaskDto, task, {
+                excludeExtraneousValues: true,
+            });
+
             return res
                 .status(201)
-                .json({tasks});
+                .json({task: responseTask});
         } catch (error) {
             next(error);
         }
@@ -34,9 +40,14 @@ export class TasksController {
             logger.info("TasksController::getAll")
             const filter: IGetAllRequestFilter = req.query;
             const tasks = await this._taskService.getAllTasks(filter);
+
+            const responseTasks = plainToInstance(TaskDto, tasks, {
+                excludeExtraneousValues: true,
+            });
+
             return res
                 .status(200)
-                .json({tasks});
+                .json({tasks: responseTasks});
         } catch (error) {
             next(error);
         }

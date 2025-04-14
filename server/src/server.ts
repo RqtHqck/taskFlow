@@ -14,7 +14,7 @@ import { StatusesService } from "@services/statuses.service";
         });
         // SERVER
         app.listen(process.env.PORT, () => {
-            console.log(`Server started on http://localhost:${process.env.PORT}`);
+            logger.info(`Server started on http://localhost:${process.env.PORT}`);
         });
     } catch (error) {
         logger.error(error);
